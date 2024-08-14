@@ -3,21 +3,9 @@ import time
 import random
 from deep_translator import GoogleTranslator
 
-tenComandments = """
-1. לֹא יִהְיֶה לְךָ אֱלֹהִים אֲחֵרִים עַל פָּנָי.
-2. לֹא תַעֲשֶׂה לְךָ פֶּסֶל וְכָל תְּמוּנָה.
-3. לֹא תִשָּׂא אֶת שֵׁם־יְהוָה אֱלֹהֶיךָ לַשָּׁוְא.
-4. זָכוֹר אֶת־יוֹם הַשַּׁבָּת לְקַדְּשׁוֹ.
-5. כַּבֵּד אֶת־אָבִיךָ וְאֶת־אִמֶּךָ.
-6. לֹא תִרְצָח.
-7. לֹא תִנְאָף.
-8. לֹא תִגְנֹב.
-9. לֹא תַעֲנֶה בְרֵעֲךָ עֵד שָׁקֶר.
-10. לֹא תַחְמֹד.
-"""
 
-text = tenComandments
-#text = input("What text would you like to translate? ")
+
+text = input("What text would you like to translate? ")
 def weighted_random_choice(languages, weights):
     return random.choices(languages, weights=weights, k=1)[0]
 
