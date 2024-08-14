@@ -1,11 +1,7 @@
 # Code comments are for the weak 
-import time
 import random
 from deep_translator import GoogleTranslator
 
-
-lorem = "Lorem ipsum odor amet, consectetuer adipiscing elit. Hendrerit sociosqu himenaeos congue scelerisque habitasse congue nam interdum. Ante dictum ad fusce mauris volutpat lacus. Quam phasellus nisl fringilla in dui vestibulum posuere. Risus condimentum nisi fusce morbi ante. Ornare ultrices nunc tincidunt tellus imperdiet curae magna. Vivamus efficitur ante leo; in luctus commodo. Suscipit dui risus torquent faucibus varius litora diam malesuada. Orci tristique taciti ridiculus sodales egestas. Dui et justo, at habitant inceptos posuere."
-text = lorem
 def weighted_random_choice(languages, weights):
     return random.choices(languages, weights=weights, k=1)[0]
 
@@ -35,19 +31,24 @@ weights = {
     'yo': 6, 'zu': 6
 }
 
-x = 25
-for i in range(int(x)):
-    try:
-        lang = weighted_random_choice(supported_languages, [weights[lang] for lang in supported_languages])
-        text = GoogleTranslator(source='auto', target=lang).translate(text)
-        print(f"Step {i+1}: Translated to {lang}")
-    except Exception as e:
-        print(f"Error during translation at step {i}: {e}")
-        continue 
+def main():
+    text = "John Doe, a renowned yet enigmatic figure in the field of advanced quantum mechanics, has recently unveiled groundbreaking research that challenges existing paradigms. His latest paper, published in the prestigious Journal of Theoretical Physics, delves into the intricacies of multi-dimensional space-time and its implications for our understanding of the universe. Despite his profound impact on the scientific community, John Doe remains a reclusive personality, shrouded in mystery and seldom seen in the public eye. The significance of his work not only advances theoretical physics but also raises profound questions about the nature of reality itself. Translating discussions about John Doe’s contributions requires a nuanced approach, as the complexity of his research and the subtleties of his personal narrative must both be conveyed with precision and clarity."
+    x = 25
+    language_weights = [weights[lang] for lang in supported_languages]
+    for i in range(x):
+        try:
+            lang = weighted_random_choice(supported_languages, language_weights)
+            text = GoogleTranslator(source='auto', target=lang).translate(text)
+            print(f"Step {i+1}: Translated to {lang}")
+        except Exception as e:
+            print(f"Error during translation at step {i}: {e}")
+            continue 
 
-try:
-    final_text = GoogleTranslator(source='auto', target='en').translate(text)
-    print("Final translated text back to English:")
-    print(final_text)
-except Exception as e:
-    print(f"Error translating back to English: {e}")
+    try:
+        final_text = GoogleTranslator(source='auto', target='en').translate(text)
+        print("Final translated text back to English:")
+        print(final_text)
+    except Exception as e:
+        print(f"Error translating back to English: {e}")
+if __name__ == "__main__":
+    main()

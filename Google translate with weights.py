@@ -1,11 +1,7 @@
 # Code comments are for the weak 
-import time
 import random
 from deep_translator import GoogleTranslator
 
-
-
-text = input("What text would you like to translate? ")
 def weighted_random_choice(languages, weights):
     return random.choices(languages, weights=weights, k=1)[0]
 
@@ -35,19 +31,25 @@ weights = {
     'yo': 6, 'zu': 6
 }
 
-x = input("How many times would you like to translate the text? ")
-for i in range(int(x)):
-    try:
-        lang = weighted_random_choice(supported_languages, [weights[lang] for lang in supported_languages])
-        text = GoogleTranslator(source='auto', target=lang).translate(text)
-        print(f"Step {i+1}: Translated to {lang}")
-    except Exception as e:
-        print(f"Error during translation at step {i}: {e}")
-        continue 
+def main():
+    text = input("What text would you like to translate? ")
+    x = int(input("How many times would you like to translate the text? "))
+    language_weights = [weights[lang] for lang in supported_languages]
+    for i in range(x):
+        try:
+            lang = weighted_random_choice(supported_languages, language_weights)
+            text = GoogleTranslator(source='auto', target=lang).translate(text)
+            print(f"Step {i+1}: Translated to {lang}")
+        except Exception as e:
+            print(f"Error during translation at step {i}: {e}")
+            continue 
 
-try:
-    final_text = GoogleTranslator(source='auto', target='en').translate(text)
-    print("Final translated text back to English:")
-    print(final_text)
-except Exception as e:
-    print(f"Error translating back to English: {e}")
+    try:
+        final_text = GoogleTranslator(source='auto', target='en').translate(text)
+        print("Final translated text back to English:")
+        print(final_text)
+    except Exception as e:
+        print(f"Error translating back to English: {e}")
+
+if __name__ == "__main__":
+    main()
