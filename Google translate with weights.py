@@ -48,7 +48,7 @@ weights = {
 }
 
 x = input("How many times would you like to translate the text? ")
-for i in range(x):
+for i in range(int(x)):
     try:
         lang = weighted_random_choice(supported_languages, [weights[lang] for lang in supported_languages])
         text = GoogleTranslator(source='auto', target=lang).translate(text)
