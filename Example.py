@@ -33,7 +33,7 @@ weights = {
 
 def main():
     text = "John Doe, a renowned yet enigmatic figure in the field of advanced quantum mechanics, has recently unveiled groundbreaking research that challenges existing paradigms. His latest paper, published in the prestigious Journal of Theoretical Physics, delves into the intricacies of multi-dimensional space-time and its implications for our understanding of the universe. Despite his profound impact on the scientific community, John Doe remains a reclusive personality, shrouded in mystery and seldom seen in the public eye. The significance of his work not only advances theoretical physics but also raises profound questions about the nature of reality itself. Translating discussions about John Doe’s contributions requires a nuanced approach, as the complexity of his research and the subtleties of his personal narrative must both be conveyed with precision and clarity."
-    x = 25
+    x = 10
     language_weights = [weights[lang] for lang in supported_languages]
     for i in range(x):
         try:
