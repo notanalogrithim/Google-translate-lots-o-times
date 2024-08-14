@@ -3,8 +3,6 @@ import time
 import random
 from deep_translator import GoogleTranslator
 
-#Does this even work, is it even needed, who knows
-random.seed(random.randint)
 tenComandments = """
 1. לֹא יִהְיֶה לְךָ אֱלֹהִים אֲחֵרִים עַל פָּנָי.
 2. לֹא תַעֲשֶׂה לְךָ פֶּסֶל וְכָל תְּמוּנָה.
