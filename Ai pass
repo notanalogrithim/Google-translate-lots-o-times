@@ -1,6 +1,6 @@
 import random
 from deep_translator import GoogleTranslator
-from transformers import AutoTokenizer, pipeline  # Added AutoTokenizer import
+from transformers import AutoTokenizer, pipeline
 
 def weighted_random_choice(languages, weights):
     return random.choices(languages, weights=weights, k=1)[0]
@@ -32,16 +32,38 @@ weights = {
 }
 
 def load_model():
-    model_name = 'gpt2'  # Use any model
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    generator = pipeline('text-generation', model=model_name, tokenizer=tokenizer, device=-1)  # Use 0 for GPU if available, -1 for CPU
+    model_name = 'gpt2'
+    tokenizer = AutoTokenizer.from_pretrained(model_name)  
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token  
+    generator = pipeline('text-generation', model=model_name, tokenizer=tokenizer, device=-1)
     return generator, tokenizer
 
+
 def truncate_text(text, max_length, tokenizer):
-    inputs = tokenizer(text, return_tensors='pt', truncation=True, max_length=max_length)
+    inputs = tokenizer(
+        text,
+        return_tensors='pt',
+        truncation=True,  
+        max_length=max_length,
+        padding='max_length', 
+        clean_up_tokenization_spaces=False  
+    )
     return tokenizer.decode(inputs['input_ids'][0], skip_special_tokens=True)
 
-def generate_text(prompt, generator, tokenizer, max_length=1000):
+
+def truncate_text(text, max_length, tokenizer):
+    # Tokenize text with truncation and padding
+    inputs = tokenizer(
+        text,
+        return_tensors='pt',
+        truncation=True, 
+        max_length=max_length,
+        padding='max_length' 
+    )
+    return tokenizer.decode(inputs['input_ids'][0], skip_special_tokens=True)
+
+def generate_text(prompt, generator, tokenizer, max_length=500):
     truncated_prompt = truncate_text(prompt, max_length, tokenizer)
     response = generator(truncated_prompt, max_length=max_length)
     return response[0]['generated_text'].strip()
@@ -51,7 +73,6 @@ def main():
     x = int(input("How many times would you like to translate the text? "))
     language_weights = [weights[lang] for lang in supported_languages]
 
-    # Translate text
     translated_text = text
     for i in range(x):
         lang = weighted_random_choice(supported_languages, language_weights)
@@ -69,15 +90,13 @@ def main():
 
         generator, tokenizer = load_model()
 
-        # Process the final text with the AI
         processed_text = generate_text(
-            f"Please perform the following task with the provided text: 1. **Grammar Correction**: Identify and correct any grammatical errors in the text. This includes correcting sentence structure, verb tenses, subject-verb agreement, and punctuation mistakes. 2. **Clarity Improvement**: Enhance the clarity of the text by making it easier to read and understand. This might involve rephrasing complex sentences, removing any ambiguous or redundant phrases, and ensuring that the language is straightforward.3. **Preserve Meaning**: Ensure that the original meaning and intent of the text are preserved. Do not alter the core message or the underlying information that the text conveys.4. **Formatting**: Maintain the original formatting of the text. If there are lists, headings, or specific formatting styles, keep them intact.5. **Conciseness**: While improving clarity, avoid making the text excessively verbose. Aim for a concise version that effectively communicates the message without unnecessary elaboration. Here is the text that needs revision: \n\n{final_text}",
+            f"Please perform the following task with the provided text: 1. **Grammar Correction**: Identify and correct any grammatical errors in the text. This includes correcting sentence structure, verb tenses, subject-verb agreement, and punctuation mistakes. 2. **Clarity Improvement**: Enhance the clarity of the text by making it easier to read and understand. This might involve rephrasing complex sentences, removing any ambiguous or redundant phrases, and ensuring that the language is straightforward. 3. **Preserve Meaning**: Ensure that the original meaning and intent of the text are preserved. Do not alter the core message or the underlying information that the text conveys. 4. **Formatting**: Maintain the original formatting of the text. If there are lists, headings, or specific formatting styles, keep them intact. 5. **Conciseness**: While improving clarity, avoid making the text excessively verbose. Aim for a concise version that effectively communicates the message without unnecessary elaboration. Here is the text that needs revision: \n\n{final_text}",
             generator,
             tokenizer,
             max_length=500
         )
 
-        # Print the processed text
         print("AI processed text:")
         print(processed_text)
 
